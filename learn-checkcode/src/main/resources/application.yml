@@ -1,0 +1,14 @@
+server:
+  port: 9205
+spring:
+  application:
+    name: learn-checkcode
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+
+checkcode:
+  length: 4
+  prefix-key: check_code_
+  expire-time: 300 # 300s

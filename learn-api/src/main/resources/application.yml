@@ -1,0 +1,39 @@
+server:
+  port: 9203
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  bucketName: learn-minio
+  accessKey: minioadmin
+  secretKey: minioadmin
+
+spring:
+  application:
+    name: learn-api
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+#  cloud:
+#    nacos:
+#      server-addr: 127.0.0.1:8848
+#      config:
+#        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+
+
+#配置dubbo，注册中心，暴露的端口和协议，dubbo注解的包扫描
+#dubbo:
+#  application:
+#    name: ${spring.application.name}
+#  protocol:
+#    name: dubbo
+#    port: 20890
+#  registry:
+#    protocol: nacos
+#    address: 127.0.0.1:8848
+#    config-center:
+#      protocol: nacos
+#      address: 127.0.0.1:8848
+#    metadata-report:
+#      protocol: nacos
+#      address: 127.0.0.1:8848
