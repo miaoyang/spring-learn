@@ -1,10 +1,12 @@
 package com.ym.learn.minio.service.impl;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import com.ym.learn.minio.config.MinioConfig;
 import com.ym.learn.minio.service.MinioService;
 import io.minio.*;
+import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +40,9 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean bucketExists(String bucketName) {
+        if (StrUtil.isEmpty(bucketName)){
+            return false;
+        }
         boolean res = false;
         try {
             res = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
@@ -49,6 +56,9 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean createBucket(String bucketName) {
+        if (StrUtil.isEmpty(bucketName)){
+            return false;
+        }
         try {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
         }catch (Exception e){
@@ -61,6 +71,9 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean removeBucket(String bucketName) {
+        if (StrUtil.isEmpty(bucketName)){
+            return false;
+        }
         try {
             minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
         }catch (Exception e){
@@ -91,12 +104,9 @@ public class MinioServiceImpl implements MinioService {
         if (StrUtil.isBlank(fileName)){
             throw new RuntimeException("upload fail!");
         }
-        String[] split = fileName.split("\\.");
-        if (split.length > 1) {
-            fileName = split[0] + "_" + System.currentTimeMillis() + "." + split[1];
-        } else {
-            fileName = fileName + System.currentTimeMillis();
-        }
+        fileName = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"_"+UUID.randomUUID().toString().replaceAll("-","")+
+                fileName.substring(fileName.lastIndexOf("."));
+        log.debug("upload: fileName {}",fileName);
         try {
             minioClient.putObject(PutObjectArgs.builder()
                             .bucket(minioConfig.getBucketName())
@@ -109,11 +119,15 @@ public class MinioServiceImpl implements MinioService {
             e.printStackTrace();
             return null;
         }
-        return fileName;
+        String url = minioConfig.getEndpoint()+"/"+minioConfig.getBucketName()+"/"+fileName;
+        return url;
     }
 
     @Override
     public void download(String fileName, HttpServletResponse res) {
+        if (StrUtil.isEmpty(fileName)){
+            return;
+        }
         ByteArrayOutputStream out = null;
         try {
             GetObjectResponse objectResponse = minioClient.getObject(GetObjectArgs.builder()
@@ -146,6 +160,9 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean remove(String fileName) {
+        if (StrUtil.isEmpty(fileName)){
+            return false;
+        }
         try {
             minioClient.removeObject(RemoveObjectArgs.builder().bucket(minioConfig.getBucketName()).object(fileName).build());
         }catch (Exception e){
@@ -158,10 +175,14 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String preview(String fileName) {
+        if (StrUtil.isEmpty(fileName)){
+            return null;
+        }
         try {
             return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
                     .bucket(minioConfig.getBucketName())
                     .object(fileName)
+                    .method(Method.GET)
                     .build());
         }catch (Exception e){
             log.error("preview error: {}",e.getMessage());

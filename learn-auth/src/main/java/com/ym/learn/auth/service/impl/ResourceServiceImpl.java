@@ -2,6 +2,7 @@ package com.ym.learn.auth.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import com.ym.learn.core.constant.RedisConstant;
+import com.ym.learn.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

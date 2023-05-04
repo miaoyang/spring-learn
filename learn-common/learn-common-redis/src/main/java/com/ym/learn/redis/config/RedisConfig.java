@@ -8,6 +8,7 @@ import com.ym.learn.redis.service.RedisService;
 import com.ym.learn.redis.service.impl.RedisServiceImpl;
 import com.ym.learn.redis.util.RedisLockUtil;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
@@ -25,6 +26,7 @@ import java.time.Duration;
  * @Date: 2023/4/21 16:35
  * @Desc: redis基础配置
  */
+@Configuration
 public class RedisConfig {
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory){

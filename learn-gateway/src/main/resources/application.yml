@@ -2,6 +2,9 @@ server:
   port: 9201
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive # 解决和web包冲突问题
   application:
     name: learn-gateway
   cloud:
@@ -22,6 +25,12 @@ spring:
             - Path=/auth/**
           filters:
             - StripPrefix=1
+        - id: learn-checkcode
+          uri: lb://learn-checkcode
+          predicates:
+            - Path=/checkcode/**
+          filters:
+            - StripPrefix=1
       discovery:
         locator:
           enabled: true #开启从注册中心动态创建路由的功能
@@ -35,6 +44,19 @@ spring:
     port: 6379
     host: localhost
     password:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9401 #配置admin-server地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 
 secure:
   ignore:

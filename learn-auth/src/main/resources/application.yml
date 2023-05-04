@@ -21,6 +21,19 @@ spring:
     port: 6379
     host: localhost
     password:
+  boot:
+    admin:
+      client:
+        url: http://localhost:9401 #配置admin-server地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 
 dubbo:
   application:

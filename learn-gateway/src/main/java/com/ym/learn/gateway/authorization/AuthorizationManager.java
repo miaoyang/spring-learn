@@ -3,6 +3,7 @@ package com.ym.learn.gateway.authorization;
 import cn.hutool.core.convert.Convert;
 import com.ym.learn.core.constant.RedisConstant;
 import com.ym.learn.gateway.constant.AuthConstant;
+import com.ym.learn.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.ReactiveAuthorizationManager;

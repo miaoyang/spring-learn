@@ -13,6 +13,19 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  boot:
+    admin:
+      client:
+        url: http://localhost:9401 #配置admin-server地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
 
 #  cloud:
 #    nacos:

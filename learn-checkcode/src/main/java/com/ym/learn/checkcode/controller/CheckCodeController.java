@@ -38,9 +38,6 @@ public class CheckCodeController {
     public R verifyCheckCode(@ApiParam(name = "key")@RequestParam("key")String key,
                              @ApiParam(name = "code")@RequestParam("code")String code){
         boolean ret = checkCodeService.verifyCode(key, code);
-        if (!ret){
-            return R.fail("验证码校验失败");
-        }
         return R.ok(ret);
     }
 
