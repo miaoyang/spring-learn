@@ -40,10 +40,15 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
+                // 配置Client信息
                 .withClient("client-app")
+                // 配置ClientSecret信息
                 .secret(passwordEncoder.encode("123456"))
+                // 授权范围
                 .scopes("all")
+                // 授权类型
                 .authorizedGrantTypes("password", "refresh_token")
+                // 访问token的有效期
                 .accessTokenValiditySeconds(3600)
                 .refreshTokenValiditySeconds(86400);
     }
@@ -54,9 +59,11 @@ public class Oauth2ServerConfig extends AuthorizationServerConfigurerAdapter {
         List<TokenEnhancer> delegates = new ArrayList<>();
         delegates.add(jwtTokenEnhancer);
         delegates.add(accessTokenConverter());
-        enhancerChain.setTokenEnhancers(delegates); //配置JWT的内容增强器
+        //配置JWT的内容增强器
+        enhancerChain.setTokenEnhancers(delegates);
         endpoints.authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService) //配置加载用户信息的服务
+                //配置加载用户信息的服务
+                .userDetailsService(userDetailsService)
                 .accessTokenConverter(accessTokenConverter())
                 .tokenEnhancer(enhancerChain);
     }

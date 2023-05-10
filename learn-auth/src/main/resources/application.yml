@@ -41,9 +41,9 @@ dubbo:
   protocol:
     name: dubbo
     port: 20890  # dubbo服务暴露的端口
-    registry:
-      protocol: nacos
-      address: 127.0.0.1:8848
+  registry:
+    protocol: nacos
+    address: 127.0.0.1:8848
     config-center:
       protocol: nacos
       address: 127.0.0.1:8848

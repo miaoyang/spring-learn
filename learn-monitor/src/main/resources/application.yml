@@ -3,3 +3,7 @@ server:
 spring:
   application:
     name: learn-monitor
+  boot:
+    admin:
+      monitor:
+        default-timeout: 30000

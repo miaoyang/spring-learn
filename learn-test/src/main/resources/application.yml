@@ -1,0 +1,44 @@
+server:
+  port: 9500 # 测试模块的端口
+
+spring:
+  application:
+    name: learn-test
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  cloud:
+    nacos:
+      discovery:
+        server-addr: https://localhost:8848
+      config:
+        server-addr: ${spring.cloud.nacos.discovery.server-addr}
+  boot:
+    admin:
+      client:
+        url: http://localhost:9401 #配置admin-server地址
+
+minio:
+  endpoint: http://127.0.0.1:9000
+  bucketName: learn-minio
+  accessKey: minioadmin
+  secretKey: minioadmin
+
+rocketmq:
+  name-server: 10.220.166.134:9876
+  producer:
+    group: TestGroup # 必须指定group
+    send-message-timeout: 3000 # 消息发送超时时长，默认3s
+    retry-times-when-send-failed: 3 # 同步发送消息失败重试次数，默认2
+    retry-times-when-send-async-failed: 3 # 异步发送消息失败重试次数，默认2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+
+

@@ -27,6 +27,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/rsa/publicKey").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/oauth/token").permitAll()
+                // TODO： DELETE 测试RPC 服务是否正常
+                .antMatchers("/order/getUser").permitAll()
                 .anyRequest().authenticated();
     }
 
