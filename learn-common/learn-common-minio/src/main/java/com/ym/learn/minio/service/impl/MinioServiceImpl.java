@@ -6,6 +6,7 @@ import cn.hutool.core.util.StrUtil;
 import com.ym.learn.minio.config.MinioConfig;
 import com.ym.learn.minio.service.MinioService;
 import io.minio.*;
+import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Bucket;
 import io.minio.messages.Item;
@@ -20,6 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,6 +61,9 @@ public class MinioServiceImpl implements MinioService {
     public boolean createBucket(String bucketName) {
         if (StrUtil.isEmpty(bucketName)){
             return false;
+        }
+        if (this.bucketExists(bucketName)){
+            return true;
         }
         try {
             minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
@@ -121,6 +127,24 @@ public class MinioServiceImpl implements MinioService {
         }
         String url = minioConfig.getEndpoint()+"/"+minioConfig.getBucketName()+"/"+fileName;
         return url;
+    }
+
+    @Override
+    public String upload(String localPath, String objectName, String mimeType, String bucket) {
+        createBucket(bucket);
+        try {
+           minioClient.uploadObject(UploadObjectArgs.builder()
+                    .contentType(mimeType)
+                    .object(objectName)
+                    .filename(localPath)
+                    .bucket(bucket)
+                    .build());
+           return minioConfig.getEndpoint()+"/"+minioConfig.getBucketName()+"/"+objectName;
+        } catch (Exception e) {
+            log.error("upload error: {}",e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

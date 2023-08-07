@@ -7,6 +7,33 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  main:
+    allow-circular-references: true # 循环应用
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/learn-spring?serverTimezone=UTC&userUnicode=true&useSSL=false
+    username: root
+    password: 123456
+  quartz:
+    job-store-type: jdbc # quartz任务存储类型：jdbc或memory
+    wait-for-jobs-to-complete-on-shutdown: true # 关闭时等待任务完成
+    overwrite-existing-jobs: true # 可以覆盖已有的任务
+    auto-startup: true
+    properties: # quartz原生配置
+      org:
+        quartz:
+          scheduler:
+            instanceName: scheduler # 调度器实例名称
+            instanceId: AUTO # 调度器实例ID自动生成
+          jobStore:
+            class: org.springframework.scheduling.quartz.LocalDataSourceJobStore # 调度信息存储处理类
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate # 使用完全兼容JDBC的驱动
+            tablePrefix: QRTZ_ # quartz相关表前缀
+            useProperties: false # 是否将JobDataMap中的属性转为字符串存储
+          threadPool:
+            class: org.quartz.simpl.SimpleThreadPool # 指定线程池实现类，对调度器提供固定大小的线程池
+            threadCount: 10 # 设置并发线程数量
+            threadPriority: 5 # 指定线程优先级
   cloud:
     nacos:
       discovery:
@@ -25,7 +52,7 @@ minio:
   secretKey: minioadmin
 
 rocketmq:
-  name-server: 10.220.166.134:9876
+  name-server: 192.168.2.131:9876 # 连接rmq server的IP
   producer:
     group: TestGroup # 必须指定group
     send-message-timeout: 3000 # 消息发送超时时长，默认3s
@@ -38,7 +65,13 @@ management:
       exposure:
         include: '*'
   endpoint:
+    prometheus:
+      enabled: true
     health:
       show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true # 开启prometheus
 
 

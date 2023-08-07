@@ -23,6 +23,8 @@
         <module>learn-common/learn-common-interface</module>
         <module>learn-common/learn-common-rocketmq</module>
         <module>learn-test</module>
+        <module>learn-common/learn-common-generate</module>
+        <module>learn-common/learn-common-quartz</module>
     </modules>
 
     <properties>
@@ -47,6 +49,15 @@
         <admin.version>2.7.9</admin.version>
 
         <rocketmq.version>2.2.1</rocketmq.version>
+        <mysql.version>8.0.30</mysql.version>
+        <druid.version>1.2.16</druid.version>
+        <freemarker.version>2.7.9</freemarker.version>
+
+        <mybatis.version>3.4.1</mybatis.version>
+
+        <simplemagic.version>1.17</simplemagic.version>
+        <quartz.version>2.7.2</quartz.version>
+        <prometheus.version>1.10.4</prometheus.version>
 
     </properties>
 
@@ -152,6 +163,57 @@
                 <version>2.2.1</version>
             </dependency>
 
+            <!--mysql-->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+
+            <!-- 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+           <!--freemarker-->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-freemarker</artifactId>
+                <version>${freemarker.version}</version>
+            </dependency>
+
+            <!--mybatis-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.j256.simplemagic</groupId>
+                <artifactId>simplemagic</artifactId>
+                <version>${simplemagic.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-quartz</artifactId>
+                <version>${quartz.version}</version>
+            </dependency>
+
+            <!--prometheus-->
+            <dependency>
+                <groupId>io.micrometer</groupId>
+                <artifactId>micrometer-registry-prometheus</artifactId>
+                <version>${prometheus.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

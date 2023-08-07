@@ -53,6 +53,16 @@ public interface MinioService {
     String upload(MultipartFile multipartFile);
 
     /**
+     * 上传文件
+     * @param localPath 本地路径
+     * @param objectName 对象名称
+     * @param mimeType 媒体类型
+     * @param bucket 桶名称
+     * @return
+     */
+    String upload(String localPath, String objectName, String mimeType, String bucket);
+
+    /**
      * 下载文件
      * @param fileName
      * @param res

@@ -1,6 +1,7 @@
 package com.ym.learn.test.lock;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,13 +17,8 @@ public class ReentrantLockTest {
     private static final ReentrantLock lock = new ReentrantLock();
     private ExecutorService executorService = Executors.newFixedThreadPool(5);
 
-    public static void main(String[] args) {
-       ReentrantLockTest reentrantLockTest = new ReentrantLockTest();
-       for (int i = 0; i < 100; i++){
-           reentrantLockTest.test();
-       }
-    }
 
+    @Test
     public void test(){
         lock.lock();
         try {
@@ -39,5 +35,16 @@ public class ReentrantLockTest {
         }finally {
             lock.unlock();
         }
+    }
+
+    public void test2() throws InterruptedException {
+        ReentrantLockTest reentrantLockTest = new ReentrantLockTest();
+        try {
+            reentrantLockTest.wait(1000);
+        }catch (InterruptedException e) {
+
+        }
+
+
     }
 }
