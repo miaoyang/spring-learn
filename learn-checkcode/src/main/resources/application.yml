@@ -23,8 +23,14 @@ management:
       exposure:
         include: '*'
   endpoint:
+    prometheus:
+      enabled: true
     health:
       show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true # 开启prometheus
 
 checkcode:
   length: 4
